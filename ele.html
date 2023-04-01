@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pharmaceutical page</title>
+    <style>
+        #container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: auto;
+            gap: 20px;
+
+
+        }
+
+        #container>div>img {
+            width: 100%;
+            height: 50%;
+        }
+
+        #container>div {
+            height: 500px;
+            text-align: center;
+            box-shadow: rgba(7, 7, 7, 0.35) 0px 5px 15px;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <p>Sort:</p>
+        <select name="" id="sort">
+            <option value="">Featured</option>
+            <option value="lowhigh">Price:Low to High</option>
+            <option value="highlow">Price:High to Low</option>
+           
+        </select>
+       
+    </div>
+    <div id="container"></div>
+
+</body>
+
+</html>
+<script>
+    //     
+    let cart = JSON.parse(localStorage.getItem("Addtocart")) || [];
+    let prdtdata;
+
+
+
+    fetch("http://localhost:1122/eles/", {
+        method: "GET",
+        headers: {
+            "Content-type": "Application/json"
+        }
+    })
+        .then((res) => {
+            // console.log(res)
+            return res.json()
+        })
+        .then((data) => {
+
+            console.log(data.ele);
+            displayData(data.ele)
+            let prdtdata = data
+            console.log("hello",prdtdata)
+            
+
+        })
+        .catch((err) => {
+            console.log(err)
+        })
+    function displayData(data) {
+        document.querySelector("#container").innerHTML = ""
+        data.forEach(function (el) {
+            let div = document.createElement("div")
+
+            let image = document.createElement("img")
+            image.setAttribute("src", el.img)
+
+
+            let name= document.createElement("h3")
+            name.textContent = el.name;
+
+            let type= document.createElement("h3")
+            type.textContent = el.type;
+
+
+            let price = document.createElement("p")
+            price.textContent = "₹ " + el.price
+
+            let rtn = document.createElement("h3")
+            rtn.textContent = el.rating;
+
+            let buynow = document.createElement("button")
+            buynow.textContent = "Add To Cart"
+
+
+            buynow.addEventListener("click", function () {
+                let cart = JSON.parse(localStorage.getItem("Addtocart")) || [];
+
+                let datapresent = false;
+                for (let i = 0; i < cart.length; i++) {
+                    if (cart[i]._id == el._id) {
+                        datapresent = true;
+                        break;
+                    }
+                }
+
+                console.log(datapresent)
+                if (datapresent == true) {
+                    alert("Product Already in Cart");
+                     window.location.href="./index.html"
+
+                } else {
+                    cart.push({ ...el, quantity: 1 });
+                    localStorage.setItem("Addtocart", JSON.stringify(cart));
+                    alert("Product Added To Cart ✔");
+                    window.location.href="./index.html"
+
+
+                }
+            })
+            
+
+
+            div.append(image, name,type, price, rtn, buynow)
+
+            document.querySelector("#container").append(div);
+
+
+        })
+    }
+    // let item=JSON.parse(localStorage.getItem("data"))||[]
+
+ document.querySelector("#sort").addEventListener("change", on1)
+ function on1(){
+    let select=document.querySelector("#sort").value
+    console.log(select)
+    
+
+    if(select=="lowhigh"){
+        let sorteddata=prdtdata.sort(function(a,b){
+        
+            return a.price-b.price
+        })
+        displayData(sorteddata);
+    }else if(select=="highlow"){
+        let sorteddata2=prdtdata.sort(function(a,b){
+            return b.price-a.price
+        })
+        displayData(sorteddata2);
+    }
+
+
+    // window.location.reload()
+
+}
+// display1(items)
+displayData(prdtdata)
+
+
+
+
+
+
+</script>
