@@ -52,7 +52,7 @@
 
 
 
-    fetch("http://localhost:1122/pharmas/", {
+    fetch("https://busy-puce-vulture-shoe.cyclic.app/eles/", {
         method: "GET",
         headers: {
             "Content-type": "Application/json"
@@ -64,8 +64,8 @@
         })
         .then((data) => {
 
-            console.log(data.pharma);
-            displayData(data.pharma)
+            console.log(data.ele);
+            displayData(data.ele)
             let prdtdata = data
             console.log("hello",prdtdata)
             
