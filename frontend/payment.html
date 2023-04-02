@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Payment Page</title>
+  <style>
+    #container {
+      width: 100%;
+      height: 800px;
+      background-color: #1b72f5
+    }
+    #name{
+      width: 10%;
+      height: 40px;
+      
+    }
+    #cardNo{
+      width: 10%;
+      height: 40px;
+      
+    }
+    #cardCvv{
+      width: 10%;
+      height: 40px;
+      
+    }
+    #cc{
+      width: 10%;
+      height: 40px;
+      
+    }
+    
+
+  </style>
+</head>
+
+<body>
+  <form id="container">
+    <input type="text" id="name" placeholder="Name" />
+    <input type="number" id="cardNo" placeholder="Card No." />
+    <input type="number" id="cardCvv" placeholder="Card CVV" />
+    <input type="submit" id="cc" value="Confirm" />
+  </form>
+</body>
+
+</html>
+<script>
+  let payment = document.querySelector("form");
+  payment.addEventListener("submit", function (event) {
+    event.preventDefault();
+    let name = document.querySelector('#name').value;
+    let cardNumber = document.querySelector('#cardNo').value;
+    let cvv = document.querySelector('#cardCvv').value;
+
+    let obj = {
+      name,
+      cardNumber,
+      cvv
+    }
+
+    console.log(obj)
+    if (obj.name == "" ||
+      obj.cardNumber == "" ||
+      obj.cvv == "") {
+      alert("please fill all the details");
+    } else {
+      window.location = "./otp.html"
+    }
+  });
+</script>
